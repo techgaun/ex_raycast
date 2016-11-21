@@ -33,6 +33,28 @@ defmodule ExRaycast do
     inside
   end
 
+  @doc """
+  Checks if a given lat, lng is in the polygons in a KML file or not
+
+  ## Examples
+
+      iex> ExRaycast.lat_long_in_kml?(37.6646855, -97.2477088, "test/support/westar.kml")
+      true
+
+      iex> ExRaycast.lat_long_in_kml?(32.6646855, -95.2477088, "test/support/westar.kml")
+      false
+  """
+  @spec lat_long_in_kml?(number, number, String.t) :: boolean
+  def lat_long_in_kml?(lat, lng, kml_file) do
+    kml_file
+    |> extract_geometry_from_kml
+    |> process_geometry_from_kml
+    |> Enum.any?(&(lat_long_in_kml_polygon?(lat, lng, &1)))
+  end
+
+  @doc """
+  Checks if a given lat,long is in kml polygon or not
+  """
   @spec lat_long_in_kml_polygon?(number, number, tuple) :: boolean
   def lat_long_in_kml_polygon?(lat, lng, {out_points, in_points}) when length(out_points) > 0 and length(in_points) > 0 do
     point_in_polygon?(lat, lng, out_points) and (not point_in_polygon?(lat, lng, in_points))
@@ -42,17 +64,14 @@ defmodule ExRaycast do
   end
   def lat_long_in_kml_polygon?(_lat, _lng, {_out_points, _in_points}), do: false
 
-  def extract_geometry_from_kml(file) do
-    data = File.read!(file)
-      |> Floki.find("multigeometry")
-      |> Floki.raw_html
-
-    File.write!("output.kml", data)
+  defp extract_geometry_from_kml(file) do
+    File.read!(file)
+    |> Floki.find("multigeometry")
+    |> Floki.raw_html
   end
 
-  def process_kml(file) do
-    file
-    |> File.read!
+  defp process_geometry_from_kml(geometry) do
+    geometry
     |> Floki.find("polygon")
     |> Stream.map(fn x ->
       out_search = x
