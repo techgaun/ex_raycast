@@ -5,6 +5,7 @@ defmodule ExRaycast.Mixfile do
     [app: :ex_raycast,
      version: "0.1.0",
      elixir: "~> 1.3",
+     description: "A simple raycast algorithm implementation in Elixir",
      package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
