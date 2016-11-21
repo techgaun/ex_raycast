@@ -8,6 +8,8 @@ defmodule ExRaycast.Mixfile do
      package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     docs: [extras: ["README.md"]],
+     source_url: "https://github.com/techgaun/ex_raycast",
      deps: deps()]
   end
 
@@ -29,13 +31,19 @@ defmodule ExRaycast.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:floki, "~> 0.11.0"}
+      {:floki, "~> 0.11.0"},
+      {:earmark, "~> 0.1", only: :dev},
+      {:ex_doc, "~> 0.11", only: :dev}
     ]
   end
 
   defp package do
-    %{
-      "links" => %{"GitHub" => "https://github.com/techgaun/ex_raycast"}
-    }
+    [
+      maintainers: [
+        "Samar Acharya"
+      ],
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/techgaun/ex_raycast"}
+    ]
   end
 end
