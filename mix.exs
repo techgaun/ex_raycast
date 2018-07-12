@@ -2,16 +2,18 @@ defmodule ExRaycast.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :ex_raycast,
-     version: "0.1.0",
-     elixir: "~> 1.3",
-     description: "A simple raycast algorithm implementation in Elixir",
-     package: package,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     docs: [extras: ["README.md"]],
-     source_url: "https://github.com/techgaun/ex_raycast",
-     deps: deps()]
+    [
+      app: :ex_raycast,
+      version: "0.1.0",
+      elixir: "~> 1.3",
+      description: "A simple raycast algorithm implementation in Elixir",
+      package: package(),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      docs: [extras: ["README.md"]],
+      source_url: "https://github.com/techgaun/ex_raycast",
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
